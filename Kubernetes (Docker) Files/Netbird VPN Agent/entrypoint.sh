@@ -17,7 +17,7 @@ fi
 log "Starting NetBird daemon..."
 netbird service install 2>/dev/null || true
 netbird service start
-netbird up --setup-key "$NB_SETUP_KEY"
+netbird up --setup-key "$NB_SETUP_KEY" --rosenpass-permissive
 
 log "Waiting for NetBird connection..."
 elapsed=0
@@ -59,6 +59,11 @@ export Horde__ComputeIp="$NETBIRD_IP"
 
 log "Environment configured:"
 log "  Horde__ComputeIp=$Horde__ComputeIp"
+
+mkdir -p /home/horde-docker/.wine
+chown -R horde-docker:horde-docker /home/horde-docker/.wine
+export WINEPREFIX=/home/horde-docker/.wine
+export WINEARCH=win64
 
 log "Starting Horde Agent"
 
