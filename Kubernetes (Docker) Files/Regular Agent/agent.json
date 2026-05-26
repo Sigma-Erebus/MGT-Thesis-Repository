@@ -1,0 +1,11 @@
+{
+    "horde": {
+        "wineExecutablePath": "/usr/bin/wine",
+        "ephemeral": true,
+        "workingDir": "/home/horde-docker/Horde/Workspace",
+        "logsDir": "/home/horde-docker/Horde/Logs",
+        "properties": {
+            "EducationTeam": "Scaling-Test-1"
+        }
+    }
+}
