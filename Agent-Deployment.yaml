@@ -1,0 +1,104 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: uba-vpn-agent-16-cores
+  namespace: horde-testing
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      name: uba-vpn-agent-16-cores
+  template:
+    metadata:
+      labels:
+        name: uba-vpn-agent-16-cores
+    spec:
+      volumes:
+        - name: netbird-data
+          emptyDir: {}
+        - name: agent-json
+          secret:
+            secretName: agent-configs
+            items:
+              - key: agent.json
+                path: agent.json
+            defaultMode: 420
+        - name: appsettings-json
+          secret:
+            secretName: agent-configs
+            items:
+              - key: appsettings.json
+                path: appsettings.json
+            defaultMode: 420
+        - name: production-appsettings-json
+          secret:
+            secretName: agent-configs
+            items:
+              - key: appsettings.Production.json
+                path: appsettings.Production.json
+            defaultMode: 420
+        - name: entrypoint-sh
+          secret:
+            secretName: agent-configs
+            items:
+              - key: entrypoint.sh
+                path: entrypoint.sh
+            defaultMode: 493
+      containers:
+        - name: vpn-agent-16-cores
+          image: >-
+            gitea.sigma-erebus.com/sigma-erebus/netbird-horde-agent-truenas:latest
+          env:
+            - name: NB_SETUP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agent-configs
+                  key: NB_SETUP_KEY
+            - name: NB_MANAGEMENT_URL
+              value: https://netbird.example.com:443
+            - name: TZ
+              value: cest
+            - name: HORDE_SERVER_URL
+              value: https://horde.example.com
+            - name: HORDE_DIRECTORY
+              value: /home/horde-docker/Horde/Agent
+            - name: NETBIRD_TIMEOUT
+              value: '600'
+            - name: Horde__cpuCount
+              value: '16'
+          resources:
+            limits:
+              cpu: '32'
+              memory: 32Gi
+            requests:
+              cpu: '32'
+              memory: 32Gi
+          volumeMounts:
+            - name: netbird-data
+              mountPath: /var/lib/netbird
+            - name: agent-json
+              readOnly: true
+              mountPath: /home/horde-docker/Horde/Agent/Data/agent.json
+              subPath: agent.json
+            - name: appsettings-json
+              readOnly: true
+              mountPath: /home/horde-docker/Horde/Agent/appsettings.json
+              subPath: appsettings.json
+            - name: production-appsettings-json
+              readOnly: true
+              mountPath: /home/horde-docker/Horde/Agent/appsettings.Production.json
+              subPath: appsettings.Production.json
+            - name: entrypoint-sh
+              mountPath: /entrypoint.sh
+              subPath: entrypoint.sh
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        kubernetes.io/hostname: static-node-name
+  strategy:
+    type: Recreate
