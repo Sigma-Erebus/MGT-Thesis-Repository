@@ -17,6 +17,10 @@ In the scaling tests, three different targets were evaluated (all from the Unrea
 - **UE5**: The full engine target consisting of 7914 compile actions
 - **UnrealInsights**: A smaller profiling tool consisting of 501 compile actions
 - **UnrealPackageTool**: A very small packaging tool consisting of 65 compile actions
+
+Non-linear regression was performed on the resulting data points, to estimate the diminishing returns of this distributed compilation process. At first, Excel was set up with a solver, but this yielded very slow results. For this reason, the `Evolution.py` Python script was written, to perform an evolutionary regression algorithm within Python instead of Excel.
+
+When opening the `Scaling Tests.xlsx` There are multiple ways of viewing the data, each comparing runs differently. Each of the different ways of viewing data has green drop-downs in the top left of the sheet which allow you to select which data to view.
 ## Scaling Test Trace Files
  
-The `Scaling Test Trace Files` folder contains the trace files for each individual test, which can be cross-referenced with the raw data to be found in the `Scaling Tests.xlsx` file.
+The `Scaling Test Trace Files` folder contains the trace files for each individual test, which can be cross-referenced with the raw data to be found in the `Scaling Tests.xlsx` file. These `.uba` files, need to be opened with Unreal's UbaVisualizer tool (Found in `Engine\Binaries\Win64\UnrealBuildAccelerator\x64\UbaVisualizer.exe`)
