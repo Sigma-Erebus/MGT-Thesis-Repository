@@ -1,6 +1,6 @@
 # Accelerating Unreal Engine Compilation by Utilizing Developer Workstations
  
-This repository serves as a collection of relevant files for the Master's thesis titled **"Accelerating Unreal Engine Compilation by Utilizing Developer Workstations"**, written by Hidde Derks, during his studies for the Master Game Technologies at Breda University of Applied Sciences. This thesis will also be included in this repository once completed.
+This repository serves as a collection of relevant files for the Master's thesis titled **"Accelerating Unreal Engine Compilation by Utilizing Developer Workstations"**, written by Hidde Derks, during his studies for the Master Game Technologies at Breda University of Applied Sciences.
  
 ## Survey Results
  
